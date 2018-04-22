@@ -4,9 +4,10 @@
       Firebase Cloud Storage With Angular
     </div>
     <ul>
-      <li *ngFor="let image of images | async">
-        {{image.url}}
-        #{{image | json}}
+      <li *ngFor="let image of images | async ">
+        <p>{{image.name}}</p>
+        <p>{{image.url}}</p>
+        <span>{{image.timeCreated}}</span>
       </li>
     </ul>
     <div class="card-body">
