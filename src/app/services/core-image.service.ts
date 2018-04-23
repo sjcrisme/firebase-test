@@ -23,6 +23,6 @@ export class CoreImageService {
   }
   saveDbImagesData(url, fName, timeCreated) {
     const itemsRef = this.afDB.list('/uploads');
-    itemsRef.push({ name: fName, timeCreated: timeCreated, url: url});
+    itemsRef.push({ name: fName, timeCreated: timeCreated, url: url, user: 'admin'});
   }
 }

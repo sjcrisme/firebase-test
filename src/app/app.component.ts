@@ -3,6 +3,7 @@ import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask,
 import { CoreImageService } from './services/core-image.service';
 import { ImageGalleryModel } from './models/imageGallery.model';
 import { Observable } from 'rxjs/Observable';
+import {AuthServiceService} from './services/auth-service.service';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +12,16 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AppComponent implements OnInit, OnChanges {
 
+  email: string;
+  password: string;
+
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   images: Observable<ImageGalleryModel[]>;
 
   constructor(private afStorage: AngularFireStorage,
-              private imageService: CoreImageService) {  }
+              private imageService: CoreImageService,
+              public authService: AuthServiceService) {  }
 
   ngOnInit() {
     this.images = this.imageService.getImages();
@@ -25,11 +30,21 @@ export class AppComponent implements OnInit, OnChanges {
     this.images = this.imageService.getImages();
   }
 
+  login() {
+    this.authService.login(this.email, this.password);
+    this.email = this.password = '';
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
   upload(event) {
     const id = Math.random().toString(32).substring(2);
     this.ref = this.afStorage.ref(id);
 
      this.task = this.ref.put(event.target.files[0]);
+
      this.task.then(
        respond => this.imageService.saveDbImagesData(respond.downloadURL, respond.metadata.name, respond.metadata.timeCreated) // console.log('$', e.downloadURL)
      );
