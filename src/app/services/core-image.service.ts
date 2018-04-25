@@ -21,8 +21,8 @@ export class CoreImageService {
   getImages(): Observable<ImageGalleryModel[]> {
      return this.afDB.list('/uploads').valueChanges();
   }
-  saveDbImagesData(url, fName, timeCreated) {
+  saveDbImagesData(url, fName, timeCreated, user) {
     const itemsRef = this.afDB.list('/uploads');
-    itemsRef.push({ name: fName, timeCreated: timeCreated, url: url, user: 'admin'});
+    itemsRef.push({ name: fName, timeCreated: timeCreated, url: url, user: user});
   }
 }
