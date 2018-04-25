@@ -12,7 +12,7 @@ import {isUndefined} from "util";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnChanges, OnDestroy {
-
+  myEmail: string;
    email: string;
   // password: string;
 
@@ -27,6 +27,8 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.images = this.imageService.getImages();
+    this.myEmail = this.authService.uEmail;
+    console.log(this.authService.uEmail);
   }
 
   ngOnDestroy() { }
@@ -47,7 +49,6 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy {
 
   upload(event) {
     console.log(this.authService.uEmail);
-    debugger;
     const id = Math.random().toString(32).substring(2);
     this.ref = this.afStorage.ref(id);
 
@@ -55,7 +56,10 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy {
 
      this.task.then(
        respond => this.imageService
-         .saveDbImagesData(respond.downloadURL, respond.metadata.name, respond.metadata.timeCreated, this.authService.uEmail | '' ) // console.log('$', e.downloadURL)
+         .saveDbImagesData(respond.downloadURL,
+                          respond.metadata.name,
+           respond.metadata.timeCreated,
+           (this.authService.uEmail)? this.authService.uEmail : 'anonim') // console.log('$', e.downloadURL)
      );
     console.log(this.task.task);
   }
